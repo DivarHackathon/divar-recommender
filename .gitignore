@@ -18,4 +18,6 @@
 *.so
 *.dylib
 
-
+# Air configration and tmp files
+/.air.toml
+/tmp/
