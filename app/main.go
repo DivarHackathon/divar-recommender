@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	config.LoadConfig("./back-end")
+	config.LoadConfig(".")
 	fmt.Println("Server running on port:", config.AppConfig.Server.Port)
 	chatService := services.NewChatService(config.AppConfig.Divar.APIKey)
 	chatHandler := handlers.NewChatHandler(chatService)
