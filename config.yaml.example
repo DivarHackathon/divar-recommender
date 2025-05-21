@@ -1,0 +1,21 @@
+server:
+  port: 1234
+
+divar:
+  api_key: ""
+  base_url: "https://open-api.divar.ir/v1/open-platform"
+  max_api_calls_per_day: 100
+
+recommendation:
+  min_score_threshold: 0.7
+  top_n: 10
+  final_n: 3
+
+database:
+  type: "postgres"
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: ""
+  dbname: "recommender"
+  persistent: true
