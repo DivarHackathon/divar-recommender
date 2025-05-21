@@ -11,17 +11,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ChatHandler struct {
+type WebhookHandler struct {
 	chatService *services.ChatService
 }
 
-func NewChatHandler(chatService *services.ChatService) *ChatHandler {
-	return &ChatHandler{
-		chatService: chatService,
-	}
-}
-
-func (h *ChatHandler) HandleChatWebhook(c *gin.Context) {
+func (h *WebhookHandler) HandleWebhook(c *gin.Context) {
 	fmt.Println("\n here")
 
 	var payload struct {

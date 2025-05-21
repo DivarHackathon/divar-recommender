@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-func SetupRoutes(router *gin.Engine, chatHandler *handlers.ChatHandler) {
+func SetupRoutes(router *gin.Engine, webhookHandler *handlers.WebhookHandler) {
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "Divar Recommender")
 	})
-	router.POST("/webhook", chatHandler.HandleChatWebhook)
+	router.POST("/webhook", webhookHandler.HandleWebhook)
 }
