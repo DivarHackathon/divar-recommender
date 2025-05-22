@@ -46,6 +46,19 @@ func (s *ChatService) BuildAdText(ad types.Ad) types.ChatMessage {
 	return types.ChatMessage{
 		Type:        "TEXT",
 		TextMessage: fmt.Sprintf("📌 %s\n💰 قیمت: %d تومان", ad.Title, ad.Price),
+		Buttons: types.ButtonsWrapper{
+			Rows: []types.ButtonRow{
+				{
+					Buttons: []types.Button{
+						{
+							Action:   types.Action{OpenDirectLink: fmt.Sprintf("https://divar.ir/v/%s", ad.Token)},
+							IconName: "CAR",
+							Caption:  "📲 باز کردن آگهی",
+						},
+					},
+				},
+			},
+		},
 	}
 }
 
