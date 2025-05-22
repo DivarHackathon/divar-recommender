@@ -15,6 +15,12 @@ type WebhookHandler struct {
 	chatService *services.ChatService
 }
 
+func NewChatHandler(chatService *services.ChatService) *WebhookHandler {
+	return &WebhookHandler{
+		chatService: chatService,
+	}
+}
+
 func (h *WebhookHandler) HandleWebhook(c *gin.Context) {
 	fmt.Println("\n here")
 
