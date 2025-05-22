@@ -85,3 +85,10 @@ type Usage struct {
 type PostItems struct {
 	Data []PostItem `json:"posts"`
 }
+
+type RecommendationPost struct {
+	Title string `json:"title"`
+	Price int    `json:"price"`
+	Image string `json:"image"`
+	Token string `json:"token"`
+}

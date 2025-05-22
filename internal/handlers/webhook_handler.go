@@ -24,19 +24,7 @@ func NewChatHandler(chatService *services.ChatService) *WebhookHandler {
 func (h *WebhookHandler) HandleWebhook(c *gin.Context) {
 	fmt.Println("\n here")
 
-	var payload struct {
-		Type              string `json:"type"`
-		NewChatbotMessage struct {
-			Text         string `json:"text"`
-			Conversation struct {
-				ID string `json:"id"`
-			} `json:"conversation"`
-			Sender struct {
-				Type string `json:"type"`
-			} `json:"sender"`
-			Type string `json:"type"`
-		} `json:"new_chatbot_message"`
-	}
+	var payload types.WebhookPayload
 
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "bad request"})

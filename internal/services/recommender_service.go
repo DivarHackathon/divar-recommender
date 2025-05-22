@@ -66,24 +66,24 @@ func reverseSafeNormalize(value, min, max int) float32 {
 	return 1 - float32(value-min)/float32(max-min)
 }
 
-func (h *RecommenderService) GetRecommendations(token string) ([]models.Post, error) {
-	p, err := h.divarService.GetPost(token)
+func (s *RecommenderService) GetRecommendations(token string) ([]models.Post, error) {
+	p, err := s.divarService.GetPost(token)
 	if err != nil {
 		return nil, err
 	}
 
-	requestBody := h.NewGetPostsRequestModel(p)
+	requestBody := s.NewGetPostsRequestModel(p)
 
-	posts, err := h.divarService.GetPosts(requestBody)
+	posts, err := s.divarService.GetPosts(requestBody)
 	if err != nil {
 		return nil, err
 	}
 
-	topPosts := h.sortByScore(posts, token)
+	topPosts := s.sortByScore(posts, token)
 	return topPosts, nil
 }
 
-func (h *RecommenderService) sortByScore(posts []models.PostItem, token string) []models.Post {
+func (s *RecommenderService) sortByScore(posts []models.PostItem, token string) []models.Post {
 	firstStepResult := []models.PostItem{}
 
 	var maxPrice int
@@ -160,7 +160,7 @@ func (h *RecommenderService) sortByScore(posts []models.PostItem, token string) 
 		go func() {
 			defer wg.Done()
 
-			post, err := h.divarService.GetPost(p.Token)
+			post, err := s.divarService.GetPost(p.Token)
 			if err != nil {
 				return
 			}
@@ -275,7 +275,7 @@ func (h *RecommenderService) sortByScore(posts []models.PostItem, token string) 
 	return topsResult
 }
 
-func (h *RecommenderService) NewGetPostsRequestModel(m models.Post) models.GetPostsRequestModel {
+func (s *RecommenderService) NewGetPostsRequestModel(m models.Post) models.GetPostsRequestModel {
 	year := ArabicToEnglishDigits(m.Data.Year)
 
 	return models.GetPostsRequestModel{
@@ -284,12 +284,12 @@ func (h *RecommenderService) NewGetPostsRequestModel(m models.Post) models.GetPo
 		Query: models.Query{
 			BrandModel: []string{m.Data.BrandModel},
 			ProductionYear: models.ProductionYear{
-				Min: year + h.productionYearHigh,
-				Max: year + h.productionYearLow,
+				Min: year + s.productionYearHigh,
+				Max: year + s.productionYearLow,
 			},
 			Usage: models.Usage{
-				Min: int(float32(m.Data.Usage) - (float32(m.Data.Usage) * h.usageCoefficient)),
-				Max: int(float32(m.Data.Usage) + (float32(m.Data.Usage) * h.usageCoefficient)),
+				Min: int(float32(m.Data.Usage) - (float32(m.Data.Usage) * s.usageCoefficient)),
+				Max: int(float32(m.Data.Usage) + (float32(m.Data.Usage) * s.usageCoefficient)),
 			},
 		},
 	}
@@ -312,4 +312,36 @@ func ArabicToEnglishDigits(input string) int {
 	numStr := builder.String()
 	num, _ := strconv.Atoi(numStr)
 	return num
+}
+
+func (s *RecommenderService) MapPostToRecommendationPost(post models.Post) models.RecommendationPost {
+	var price int
+	var image string
+
+	if post.Data.NewPrice > 0 {
+		price = post.Data.NewPrice
+	} else {
+		price = post.Data.Price.Value
+	}
+
+	if len(post.Data.Images) > 0 {
+		image = post.Data.Images[0]
+	}
+
+	return models.RecommendationPost{
+		Title: post.Data.Title,
+		Price: price,
+		Image: image,
+		Token: post.Token,
+	}
+}
+
+func (s *RecommenderService) MapPostsToRecommendationPosts(posts []models.Post) []models.RecommendationPost {
+	items := make([]models.RecommendationPost, len(posts))
+
+	for i, post := range posts {
+		items[i] = s.MapPostToRecommendationPost(post)
+	}
+
+	return items
 }

@@ -23,7 +23,7 @@ type Config struct {
 		FinalN             int     `mapstructure:"final_n"`
 		ProductionYearHigh int     `mapstructure:"production_year_high"`
 		ProductionYearLow  int     `mapstructure:"production_year_low"`
-		UsageCoeficient    float32 `mapstructure:"usage_coeficient"`
+		UsageCoefficient   float32 `mapstructure:"usage_coefficient"`
 	}
 
 	Database struct {
