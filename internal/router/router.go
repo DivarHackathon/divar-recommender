@@ -4,8 +4,9 @@ import (
 	"divar_recommender/internal/config"
 	"divar_recommender/internal/handlers"
 	"divar_recommender/internal/services"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes(router *gin.Engine, webhookHandler *handlers.WebhookHandler) {

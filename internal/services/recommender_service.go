@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -333,6 +334,7 @@ func (s *RecommenderService) MapPostToRecommendationPost(post models.Post) model
 		Price: price,
 		Image: image,
 		Token: post.Token,
+		Score: fmt.Sprintf("100 / %.0f ", post.Score*100),
 	}
 }
 
