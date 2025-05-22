@@ -91,4 +91,5 @@ type RecommendationPost struct {
 	Price int    `json:"price"`
 	Image string `json:"image"`
 	Token string `json:"token"`
+	Score string `json:"score"`
 }

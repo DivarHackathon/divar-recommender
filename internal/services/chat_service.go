@@ -45,7 +45,7 @@ func (s *ChatService) BuildImagePreview(ad types.Ad) types.ChatMessage {
 func (s *ChatService) BuildAdText(ad types.Ad) types.ChatMessage {
 	return types.ChatMessage{
 		Type:        "TEXT",
-		TextMessage: fmt.Sprintf("📌 %s\n💰 قیمت: %d تومان", ad.Title, ad.Price),
+		TextMessage: fmt.Sprintf("📌 %s\n💰 قیمت: %d تومان  \nامتیاز: %s", ad.Title, ad.Price, ad.Score),
 		Buttons: types.ButtonsWrapper{
 			Rows: []types.ButtonRow{
 				{
