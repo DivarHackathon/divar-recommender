@@ -4,7 +4,6 @@ import (
 	"divar_recommender/internal/config"
 	"divar_recommender/internal/services"
 	"divar_recommender/internal/types"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -22,8 +21,6 @@ func NewChatHandler(chatService *services.ChatService) *WebhookHandler {
 }
 
 func (h *WebhookHandler) HandleWebhook(c *gin.Context) {
-	fmt.Println("\n here")
-
 	var payload types.WebhookPayload
 
 	if err := c.ShouldBindJSON(&payload); err != nil {
@@ -54,7 +51,12 @@ func (h *WebhookHandler) HandleWebhook(c *gin.Context) {
 	r := services.NewRecommenderService(d, config.AppConfig.Recommendation.ProductionYearHigh, config.AppConfig.Recommendation.ProductionYearLow, config.AppConfig.Recommendation.UsageCoefficient)
 
 	posts, _ := r.GetRecommendations(token)
+	log.Printf("GetRecommendations returned %d posts", len(posts))
+	log.Printf("Posts data: %+v", posts)
+
 	ads := r.MapPostsToRecommendationPosts(posts)
+	log.Printf("MapPostsToRecommendationPosts returned %d ads", len(ads))
+	log.Printf("Ads data: %+v", ads)
 
 	for _, ad := range ads {
 		textMsg := h.chatService.BuildAdText(types.Ad(ad))
