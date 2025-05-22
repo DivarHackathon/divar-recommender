@@ -23,6 +23,7 @@ type Button struct {
 type Action struct {
 	OpenDirectLink string `json:"open_direct_link,omitempty"`
 }
+
 type Ad struct {
 	Title string `json:"title"`
 	Price int    `json:"price"`
