@@ -48,12 +48,6 @@ func (h *WebhookHandler) HandleWebhook(c *gin.Context) {
 		return
 	}
 
-	textMsg = h.chatService.BuildOnlyText("Invalid Input")
-	err := h.chatService.SendMessage(conversationID, textMsg)
-	if err != nil {
-		log.Println(err)
-	}
-
 	token := words[0]
 
 	d := services.NewDivarService(config.AppConfig.Divar.BaseURL, config.AppConfig.Divar.APIKey)
