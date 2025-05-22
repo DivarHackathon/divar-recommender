@@ -132,8 +132,8 @@ func (s *RecommenderService) sortByScore(posts []models.PostItem, token string) 
 		usage, _ := strconv.Atoi(p.VehiclesFields.Usage)
 		price, _ := strconv.Atoi(p.Price.Value)
 
-		normPrice := (price - minPrice) / (maxPrice - minPrice)
-		normUsage := (usage - minUsage) / (maxUsage - minUsage)
+		normPrice := safeNormalize(price, minPrice, maxPrice)
+		normUsage := safeNormalize(usage, minUsage, maxUsage)
 
 		score := (PriceAndUsageWeight * float32(normPrice)) + (PriceAndUsageWeight * float32(normUsage))
 
