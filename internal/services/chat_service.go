@@ -42,10 +42,17 @@ func (s *ChatService) BuildImagePreview(ad types.Ad) types.ChatMessage {
 	}
 }
 
-func (s *ChatService) BuildTextOnly(ad types.Ad) types.ChatMessage {
+func (s *ChatService) BuildAdText(ad types.Ad) types.ChatMessage {
 	return types.ChatMessage{
 		Type:        "TEXT",
 		TextMessage: fmt.Sprintf("📌 %s\n💰 قیمت: %d تومان", ad.Title, ad.Price),
+	}
+}
+
+func (s *ChatService) BuildOnlyText(text string) types.ChatMessage {
+	return types.ChatMessage{
+		Type:        "TEXT",
+		TextMessage: text,
 	}
 }
 
@@ -100,7 +107,7 @@ func (s *ChatService) SendMessage(conversationID string, message types.ChatMessa
 }
 
 func (s *ChatService) SendAdDetails(conversationID string, ad types.Ad) error {
-	textMsg := s.BuildTextOnly(ad)
+	textMsg := s.BuildAdText(ad)
 	if err := s.SendMessage(conversationID, textMsg); err != nil {
 		return err
 	}
